@@ -1,0 +1,115 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Enrollment {
+  id         Int      @id @default(autoincrement())
+  name       String
+  email      String
+  phone      String
+  profession String?
+  company    String?
+  message    String?
+  area       String
+  course     String
+  createdAt  DateTime @default(now())
+  status     String   @default("NOVA")
+  notes      String?
+
+  history EnrollmentHistory[]
+}
+
+model EnrollmentHistory {
+  id           Int      @id @default(autoincrement())
+  enrollmentId Int
+  oldStatus    String?
+  newStatus    String
+  createdAt    DateTime @default(now())
+
+  enrollment Enrollment @relation(fields: [enrollmentId], references: [id], onDelete: Cascade)
+}
+
+model Admin {
+  id           Int       @id @default(autoincrement())
+  name         String
+  email        String    @unique
+  passwordHash String
+  role         String    @default("ADMIN")
+  status       String    @default("ATIVO")
+  lastLoginAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+
+  sessions          AdminSession[]
+  chatConversations ChatConversation[]
+}
+
+model AdminSession {
+  id        Int      @id @default(autoincrement())
+  token     String   @unique
+  adminId   Int
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+
+  admin Admin @relation(fields: [adminId], references: [id], onDelete: Cascade)
+}
+
+model Course {
+  id          Int      @id @default(autoincrement())
+  title       String
+  slug        String   @unique
+  description String
+  area        String
+  level       String?
+  duration    String?
+  modality    String?
+  price       Float?
+  vacancies   Int?
+  status      String   @default("ATIVO")
+  image       String?
+  content     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model ChatConversation {
+  id        Int     @id @default(autoincrement())
+  visitorId String  @unique
+  name      String?
+  email     String?
+  phone     String?
+  company   String?
+  subject   String?
+  area      String?
+  status    String  @default("NOVA")
+  adminId   Int?
+
+  admin    Admin?        @relation(fields: [adminId], references: [id], onDelete: SetNull)
+  messages ChatMessage[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model ChatMessage {
+  id Int @id @default(autoincrement())
+
+  conversationId Int
+
+  conversation ChatConversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  senderType String
+
+  senderName String?
+
+  message String
+
+  readByAdmin Boolean @default(false)
+
+  createdAt DateTime @default(now())
+}
