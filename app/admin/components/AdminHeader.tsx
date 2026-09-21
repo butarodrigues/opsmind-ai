@@ -89,13 +89,13 @@ export default async function AdminHeader() {
             </strong>
           </div>
 
-          <Link
-            href="/api/admin/logout"
-            className="admin-header-logout"
-          >
-            Sair
-            <span>→</span>
-          </Link>
+          <a
+  href="/api/admin/logout"
+  className="admin-header-logout"
+>
+  Sair
+  <span>→</span>
+</a>
 
         </div>
 
