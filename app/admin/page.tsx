@@ -189,12 +189,12 @@ export default async function AdminDashboardPage() {
                 <span>→</span>
               </Link>
 
-              <Link
-                href="/api/admin/logout"
-                className="admin-dashboard-button secondary"
-              >
-                Terminar sessão
-              </Link>
+              <a
+               href="/api/admin/logout"
+              className="admin-dashboard-button secondary"
+>
+              Terminar sessão
+              </a>
             </div>
           </header>
 
