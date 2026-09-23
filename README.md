@@ -1,6 +1,6 @@
 <p align="center">
   <img
-    src="./public/images/github-cover.png"
+  src="https://raw.githubusercontent.com/butatrodrigues/opsmind-ai/main/public/images/github-cover.png"
     alt="OpsMind AI"
     width="100%"
   />
